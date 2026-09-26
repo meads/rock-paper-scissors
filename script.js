@@ -7,9 +7,37 @@ function getRandomInt(max) {
 // getHumanChoice gets one of three values "rock", "paper" or "scissors"
 // a user is prompted to choose one of three values "rock", "paper" or "scissors"
 // the user input is stored in a variable choice 
+function getHumanChoice() {
+    let input = ''
+    
+    while (!input) {
+        input = prompt("please enter [rock, paper or scissors]?")
+
+        if (input == "rock" || input == "paper" || input == "scissors") {
+            break;
+        } 
+        input = ""
+    }
+    return input
+}
 
 // getComputerChoice gets one of three values "rock", "paper" or "scissors"
 // the getComputer choice is called to get the computers choice and is stored in a variable computer choice
+function getComputerChoice() {
+    let choice = getRandomInt(3) 
+    if (choice == 0)
+        return "rock"
+    if (choice == 1)
+        return "paper"
+    if (choice == 2)
+        return "scissors"
+    throw "invalid computer choice generated"
+}
+
+const humanChoice = getHumanChoice()
+const computerChoice = getComputerChoice()
+
+console.log(`You chose ${humanChoice} and the computer chose ${computerChoice}`)
 
 // determineWinner accepts humanChoice and computerChoice as arguments and prints to the console the winner!
 // the humanChoice (lhs) is compared with the computerChoice (rhs)
