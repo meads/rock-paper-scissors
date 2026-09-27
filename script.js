@@ -6,14 +6,15 @@ function getRandomInt(max) {
 
 // getHumanChoice gets one of three values "rock", "paper" or "scissors"
 // a user is prompted to choose one of three values "rock", "paper" or "scissors"
-// the user input is stored in a variable choice 
+// the user input is stored in a variable input 
 function getHumanChoice() {
-    let input = ''
+    let input = ""
     
     while (!input) {
         input = prompt("please enter [rock, paper or scissors]?")
 
-        if (input == "rock" || input == "paper" || input == "scissors") {
+        input = input.toUpperCase()
+        if (input == "ROCK" || input == "PAPER" || input == "SCISSORS") {
             break;
         } 
         input = ""
@@ -26,11 +27,11 @@ function getHumanChoice() {
 function getComputerChoice() {
     let choice = getRandomInt(3) 
     if (choice == 0)
-        return "rock"
+        return "ROCK"
     if (choice == 1)
-        return "paper"
+        return "PAPER"
     if (choice == 2)
-        return "scissors"
+        return "SCISSORS"
     throw "invalid computer choice generated"
 }
 
@@ -39,19 +40,31 @@ const computerChoice = getComputerChoice()
 
 console.log(`You chose ${humanChoice} and the computer chose ${computerChoice}`)
 
-// determineWinner accepts humanChoice and computerChoice as arguments and prints to the console the winner!
-// the humanChoice (lhs) is compared with the computerChoice (rhs)
-// the two choices are compared to see who wins based on the choices and which one wins the match!
+// keep track of the humanScore after each round
+// keep track of the computerScore after each round
 
-// IF "rock" vs. "rock" print "no winner."
-// IF "rock" vs. "paper", "paper" wins. print "paper beats rock; computer wins!"
-// IF "rock" vs. "scissors", "rock" wins. print "rock beats scissors human wins!"
+// playRound has two parameters (lhs) humanChoice, (rhs) computerChoice and 
+// computes the winner based on those choices. at the end of a round a  
+// winner announcement is made and the round winner is returned to the caller.
+// the possible round winner values are "human", "computer", "no winner". 
 
-// IF "paper" vs. "paper" no win. print "no winner."
-// IF "paper" vs. "rock", "paper" wins. print "paper beats rock; human wins!"
-// IF "paper" vs. "scissors" "scissors" wins. print "scissors beats paper; computer wins!"
+//  IF "ROCK" vs. "ROCK" print "no winner." return "no winner"
+//  IF "ROCK" vs. "PAPER", print "paper beats rock; computer wins!" return "computer"
+//  IF "ROCK" vs. "SCISSORS", print "rock beats scissors human wins!" return "human"
 
-// IF "scissors" vs. "scissors" print "no winner."
-// IF "scissors" vs. "paper", "scissors" wins. print "scissors beeats paper; human wins!"
-// IF "scissors" vs. "rock", "rock" wins. print "rock beats scissors; computer wins!"
+//  IF "PAPER" vs. "PAPER" print "no winner." return "no winner"
+//  IF "PAPER" vs. "ROCK", print "paper beats rock; human wins!" return "human"
+//  IF "PAPER" vs. "SCISSORS" print "scissors beats paper; computer wins!" return "computer"
+
+//  IF "SCISSORS" vs. "SCISSORS" print "no winner." return "no winner"
+//  IF "SCISSORS" vs. "PAPER", print "scissors beats paper; human wins!" return "human"
+//  IF "SCISSORS" vs. "ROCK", print "rock beats scissors; computer wins!" return "computer"
+
+// playGame is the game loop and continues to play for 5 overall "winning" rounds by invoking
+// playRound and supplying the humanChoice and computerChoice inputs each time. each time
+// the round winner is returned from playRound, playGame increments the humanScore or 
+// computerScore respectively if there is a winner. If there is no winner in a round, 
+// the round is ignored and played again until someone wins for a total of 5 rounds.
+// best out of 5 wins the game!
+
 
