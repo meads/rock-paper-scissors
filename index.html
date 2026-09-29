@@ -4,8 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rock paper scissors</title>
+    <script src="script.js" defer></script>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #play-again { display: none }
+    </style>
 </head>
 <body>
-    <script src="script.js"></script>
+    <div class="container">
+        <div>
+            <div id="game-controls">
+                <button onclick="playGame('ROCK')">Rock 🪨</button>
+                <button onclick="playGame('PAPER')">Paper 📄</button>
+                <button onclick="playGame('SCISSORS')">Scissors ✂️</button>
+            </div>
+            <button id="play-again" onclick="gameOver()">Play Again</button>
+        </div>
+        <div id="score-board">Player: 0, Computer: 0</div>
+    </div>
+    <div id="results"></div>
 </body>
 </html>

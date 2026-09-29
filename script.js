@@ -11,27 +11,6 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max)
 }
 
-// getHumanChoice gets one of three values "rock", "paper" or "scissors"
-// a user is prompted to choose one of three values "rock", "paper" or "scissors"
-// the user input is stored in a variable input 
-function getHumanChoice() {
-    let input = ""
-    
-    while (!input) {
-        input = prompt("please enter [rock, paper or scissors]?")
-
-        if (!input) 
-            input = ""
-
-        input = input.toUpperCase()
-        if (input == "ROCK" || input == "PAPER" || input == "SCISSORS") {
-            break;
-        } 
-        input = ""
-    }
-    return input
-}
-
 // getComputerChoice gets one of three values "rock", "paper" or "scissors"
 // the getComputer choice is called to get the computers choice and is stored in a variable computer choice
 function getComputerChoice() {
@@ -45,110 +24,155 @@ function getComputerChoice() {
     throw "invalid computer choice generated"
 }
 
-// playRound has two parameters (lhs) humanChoice, (rhs) computerChoice and 
+// playRound has two parameters (lhs) playerChoice, (rhs) computerChoice and 
 // computes the winner based on those choices. at the end of a round a  
 // winner announcement is made and the round winner is returned to the caller.
-// the possible round winner values are "human", "computer", "no winner". 
-function playRound(humanChoice, computerChoice) {
-    const humanWinner = "human"
+// the possible round winner values are "player", "computer", "no winner". 
+function playRound(playerChoice, computerChoice) {
+    const playerWinner = "player"
     const computerWinner = "computer"
     const noWinner = "no winner"
 
     //  IF "ROCK" vs. "ROCK" print "no winner." return "no winner"
-    if (humanChoice == "ROCK" && computerChoice == "ROCK") {
-        console.log("no winner.")
+    if (playerChoice == "ROCK" && computerChoice == "ROCK") {
+        // displayResults("no winner.<br>")
         return noWinner
     }
     //  IF "ROCK" vs. "PAPER", print "paper beats rock; computer wins!" return "computer"
-    if (humanChoice == "ROCK" && computerChoice == "PAPER") {
-        console.log("paper beats rock; computer wins!")
+    if (playerChoice == "ROCK" && computerChoice == "PAPER") {
+        displayResults("paper beats rock; computer wins!<br>")
         return computerWinner
     }
-    //  IF "ROCK" vs. "SCISSORS", print "rock beats scissors human wins!" return "human"
-    if (humanChoice == "ROCK" && computerChoice == "SCISSORS") {
-        console.log("rock beats scissors human wins!")
-        return humanWinner
+    //  IF "ROCK" vs. "SCISSORS", print "rock beats scissors player wins!" return "player"
+    if (playerChoice == "ROCK" && computerChoice == "SCISSORS") {
+        displayResults("rock beats scissors player wins!<br>")
+        return playerWinner
     }
     //  IF "PAPER" vs. "PAPER" print "no winner." return "no winner"
-    if (humanChoice == "PAPER" && computerChoice == "PAPER") {
-        console.log("no winner.")
+    if (playerChoice == "PAPER" && computerChoice == "PAPER") {
+        // displayResults("no winner.<br>")
         return noWinner
     }
-    //  IF "PAPER" vs. "ROCK", print "paper beats rock; human wins!" return "human"
-    if (humanChoice == "PAPER" && computerChoice == "ROCK") {
-        console.log("paper beats rock; human wins!")
-        return humanWinner
+    //  IF "PAPER" vs. "ROCK", print "paper beats rock; player wins!" return "player"
+    if (playerChoice == "PAPER" && computerChoice == "ROCK") {
+        displayResults("paper beats rock; player wins!<br>")
+        return playerWinner
     }
     //  IF "PAPER" vs. "SCISSORS" print "scissors beats paper; computer wins!" return "computer"
-    if (humanChoice == "PAPER" && computerChoice == "SCISSORS") {
-        console.log("scissors beats paper; computer wins!")
+    if (playerChoice == "PAPER" && computerChoice == "SCISSORS") {
+        displayResults("scissors beats paper; computer wins!<br>")
         return computerWinner
     }
     //  IF "SCISSORS" vs. "SCISSORS" print "no winner." return "no winner"
-    if (humanChoice == "SCISSORS" && computerChoice == "SCISSORS") {
-        console.log("no winner.")
+    if (playerChoice == "SCISSORS" && computerChoice == "SCISSORS") {
+        // displayResults("no winner.<br>")
         return noWinner
     }
-    //  IF "SCISSORS" vs. "PAPER", print "scissors beats paper; human wins!" return "human"
-    if (humanChoice == "SCISSORS" && computerChoice == "PAPER") {
-        console.log("scissors beats paper; human wins!")
-        return humanWinner
+    //  IF "SCISSORS" vs. "PAPER", print "scissors beats paper; player wins!" return "player"
+    if (playerChoice == "SCISSORS" && computerChoice == "PAPER") {
+        displayResults("scissors beats paper; player wins!<br>")
+        return playerWinner
     }
     //  IF "SCISSORS" vs. "ROCK", print "rock beats scissors; computer wins!" return "computer"
-    if (humanChoice == "SCISSORS" && computerChoice == "ROCK") {
-        console.log("rock beats scissors; computer wins!")
+    if (playerChoice == "SCISSORS" && computerChoice == "ROCK") {
+        displayResults("rock beats scissors; computer wins!<br>")
         return computerWinner
     }
-    console.log(`humanChoice: ${humanChoice}, computerChoice: ${computerChoice}`)
+    console.log(`playerChoice: ${playerChoice}, computerChoice: ${computerChoice}`)
     throw "unexpected playRound result"
 }
 
-// keep track of the humanScore after each round
-let humanScore = 0
+// keep track of the playerScore after each round
+let playerScore = 0
 // keep track of the computerScore after each round
 let computerScore = 0
 
-// store the string choice from the user prompt, values are "ROCK", "PAPER" or "SCISSORS"
-let humanChoice = ""
-// store the random string choice by the "computer". values are "ROCK", "PAPER" or "SCISSORS"
-let computerChoice = ""
+// displayResults is for displaying the outcome of each match between the player and computer
+function displayResults(results) {
+    const resultsDiv = document.querySelector("#results")
+    resultsDiv.innerHTML += results
+}
 
-// playGame is the game loop and continues to play for 5 overall "winning" rounds by invoking
-// playRound and supplying the humanChoice and computerChoice inputs each time. each time
-// the round winner is returned from playRound, playGame increments the humanScore or 
-// computerScore respectively if there is a winner. If there is no winner in a round, 
-// the round is ignored and played again until someone wins for a total of 5 rounds.
-// best out of 5 wins the game!
-function playGame() {
-    let winningRounds = 0
-    let roundWinner = ""
+// clearResults clears the contents of the results div when a new game is started.
+function clearResults() {
+    const resultsDiv = document.querySelector("#results")
+    resultsDiv.innerHTML = ""
+}
+
+// updateScoreBoard displays the current score between the player and computer
+function updateScoreBoard(scoreString) {
+    const scoreBoardDiv = document.querySelector("#score-board")
+    scoreBoardDiv.textContent = scoreString
+}
+
+// playGame is invoked from the game control buttons "Paper", "Rock" or "Scissors" on click.
+// the choice is passed in as the playerChoice along with the computer generated choice to 
+// the playRound function and the roundWinner is computed. if both the computer and player 
+// choose the same item, No winner is the result and we exit the round. otherwise either the 
+// computer or the player winds the round and their score is incremented. both scores are 
+// displayed in the ui and the rounds continue until either the computer or the player wins
+// a total of 5 rounds. after that, game controls are hidden, play again button is displayed
+// and scores are zeroed out.
+function playGame(playerChoice) {
+    const computerChoice = getComputerChoice()
     
-    while (winningRounds < 5) {
-        humanChoice = getHumanChoice()
-        computerChoice = getComputerChoice()
-
-        roundWinner = playRound(humanChoice, computerChoice)
-        if (roundWinner == "no winner") {
-            console.log(`${humanChoice} VS. ${computerChoice}! No winner, go again!`)
-            continue;
-        }
-
-        if (roundWinner == "human") {
-            ++humanScore
-        } 
-        else if (roundWinner == "computer") {
-            ++computerScore
-        }
-        ++winningRounds
-        console.log(`The score is, human: ${humanScore}, computer: ${computerScore}`)
+    const roundWinner = playRound(playerChoice, computerChoice)
+    if (roundWinner == "no winner") {
+        displayResults(`${playerChoice} VS. ${computerChoice}! No winner, go again!<br>`)
+        return
     }
 
-    console.log(`human rounds won: ${humanScore}\ncomputer rounds won: ${computerScore}`)
-    if (humanScore > computerScore) {
-        console.log("human wins!!!")
-    } else if (humanScore < computerScore) {
-        console.log("you lost. :/")
+    if (roundWinner == "player") {
+        ++playerScore
+    } 
+    else if (roundWinner == "computer") {
+        ++computerScore
+    }
+
+    updateScoreBoard(`Player: ${playerScore}, Computer: ${computerScore}`)
+
+    if (playerScore >= 5 || computerScore >= 5) {
+        displayResults(`player rounds won: ${playerScore}\ncomputer rounds won: ${computerScore}<br>`)
+        
+        if (playerScore > computerScore) {
+            displayResults("player wins!!!<br>")
+        } 
+        else if (playerScore < computerScore) {
+            displayResults("you lost. :/<br>")
+        }
+        
+        hideGameControls()
+        showPlayAgainButton()
+        playerScore = 0
+        computerScore = 0
     }
 }
 
-playGame()
+function hidePlayAgainButton() {
+    const btnPlayAgain = document.querySelector("#play-again")
+    btnPlayAgain.style.display = "none"
+}
+
+function showPlayAgainButton() {
+    const btnPlayAgain = document.querySelector("#play-again")
+    btnPlayAgain.style.display = "block"
+}
+
+function hideGameControls() {
+    const gameControls = document.querySelector("#game-controls")
+    gameControls.style.display = "none"
+}
+
+function showGameControls() {
+    const gameControls = document.querySelector("#game-controls")
+    gameControls.style.display = "block"
+}
+
+// gameOver clears the results div, updates the scoreboard to its default value 
+// hides the play again button and displays the game controls once again.
+function gameOver() {
+    clearResults()
+    updateScoreBoard(`Player: 0, Computer: 0`)
+    hidePlayAgainButton()
+    showGameControls()
+}
